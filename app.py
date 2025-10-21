@@ -57,8 +57,20 @@ if st.button("🔮 Dự đoán"):
     input_data = np.array([[fixed_acidity, volatile_acidity, citric_acid, residual_sugar,
                             chlorides, free_sulfur_dioxide, total_sulfur_dioxide,
                             density, pH, sulphates, alcohol]])
-    input_scaled = scaler.transform(input_data)
-    prediction = model.predict(input_scaled)[0]
-    prediction = max(3, min(8, prediction))  # Giới hạn 3–8
-
-    st.success(f"🎯 **Điểm chất lượng dự đoán: {prediction:.2f}/8**")
+    
+    # --- Trường hợp 1: Tất cả đều bằng 0 ---
+    if np.all(input_data == 0):
+        st.error("🚫 Dữ liệu không hợp lệ! Tất cả giá trị đều bằng 0 — không thể dự đoán.")
+    
+    # --- Trường hợp 2: Có ít nhất một giá trị bằng 0 ---
+    elif np.any(input_data == 0):
+        st.warning("⚠️ Một số giá trị bằng 0 — hệ thống coi đây là dữ liệu bất thường.")
+        prediction = 3.0
+        st.success(f"🎯 **Điểm chất lượng dự đoán (giảm do dữ liệu bất thường): {prediction:.2f}/8**")
+    
+    # --- Trường hợp 3: Dữ liệu hợp lệ ---
+    else:
+        input_scaled = scaler.transform(input_data)
+        prediction = model.predict(input_scaled)[0]
+        prediction = max(3, min(8, prediction))  # Giới hạn trong 3–8
+        st.success(f"🎯 **Điểm chất lượng dự đoán: {prediction:.2f}/8**")
