@@ -19,8 +19,7 @@ pH = float(input("9. pH: "))
 sulphates = float(input("10. sulphates: "))
 alcohol = float(input("11. alcohol: "))
 
-# ⚠️ Một số dataset chỉ có 11 đặc trưng — bỏ dòng "magnesium" và "color_intensity" nếu không có
-# Nếu bạn dùng WineQuality.csv (11 cột đầu), thì chỉ cần 11 giá trị như ở trên là đủ
+
 
 # 3️⃣ Tạo mảng dữ liệu để dự đoán
 features = np.array([[fixed_acidity, volatile_acidity, citric_acid, residual_sugar,
